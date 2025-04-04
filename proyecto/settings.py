@@ -87,7 +87,7 @@ if USE_GCS:
     GS_PROJECT_ID = 'proyecto-453621'
     
     # Ruta completa al archivo de credenciales
-    GS_CREDENTIALS_FILE = os.path.join(BASE_DIR, 'proyecto-453621-f6ed7dddf22d.json')
+    GS_CREDENTIALS_FILE = os.path.join(BASE_DIR, 'proyecto-453621-cf370d2140e0.json')
     
     # Comprobar si existe el archivo de credenciales
     if os.path.exists(GS_CREDENTIALS_FILE):

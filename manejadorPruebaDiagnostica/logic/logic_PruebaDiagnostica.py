@@ -79,7 +79,7 @@ def subir_archivo_eeg(prueba_id, archivo):
                     from google.cloud import storage
                     
                     # Cargar credenciales directamente desde el archivo
-                    credentials_file = os.path.join(settings.BASE_DIR, 'proyecto-453621-f6ed7dddf22d.json')
+                    credentials_file = os.path.join(settings.BASE_DIR, 'proyecto-453621-cf370d2140e0.json')
                     
                     if not os.path.exists(credentials_file):
                         print(f"ADVERTENCIA: No se encontró el archivo de credenciales en {credentials_file}")
