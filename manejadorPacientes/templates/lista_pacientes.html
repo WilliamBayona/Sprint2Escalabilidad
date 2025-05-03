@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pacientes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .search-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #003d82;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #6c757d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Pacientes</h1>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar paciente..." onkeyup="filterTable()">
+        </div>
+        
+        <table id="patientsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Género</th>
+                    <th>Tipo de Sangre</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if pacientes %}
+                    {% for paciente in pacientes %}
+                        <tr>
+                            <td>{{ paciente.id }}</td>
+                            <td>{{ paciente.nombre }}</td>
+                            <td>{{ paciente.edad }}</td>
+                            <td>{{ paciente.genero }}</td>
+                            <td>{{ paciente.tipo_sangre }}</td>
+                            <td>
+                                <a href="{% url 'get_paciente' paciente.id %}" class="btn">Ver Detalle</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="empty-state">No hay pacientes registrados en el sistema.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterTable() {
+            // Obtener el valor del campo de búsqueda
+            var input = document.getElementById("searchInput");
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById("patientsTable");
+            var rows = table.getElementsByTagName("tr");
+
+            // Recorrer todas las filas y ocultar las que no coincidan con la búsqueda
+            for (var i = 1; i < rows.length; i++) { // Comenzar desde 1 para omitir el encabezado
+                var showRow = false;
+                var cells = rows[i].getElementsByTagName("td");
+                
+                // Si es una fila con mensaje de "No hay pacientes", mostrarla solo si no hay filtro
+                if (cells.length === 1 && cells[0].className === "empty-state") {
+                    rows[i].style.display = filter === "" ? "" : "none";
+                    continue;
+                }
+                
+                // Revisar cada celda para ver si coincide con la búsqueda
+                for (var j = 0; j < cells.length; j++) {
+                    var cell = cells[j];
+                    if (cell) {
+                        var text = cell.textContent || cell.innerText;
+                        if (text.toUpperCase().indexOf(filter) > -1) {
+                            showRow = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // Mostrar u ocultar la fila según corresponda
+                rows[i].style.display = showRow ? "" : "none";
+            }
+        }
+    </script>
+</body>
+</html>

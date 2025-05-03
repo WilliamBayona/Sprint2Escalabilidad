@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Paciente</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .info-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .info-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #555;
+            width: 180px;
+            display: inline-block;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #003d82;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalle del Paciente</h1>
+        
+        <div class="info-group">
+            <div class="info-item">
+                <span class="info-label">ID:</span>
+                <span>{{ paciente.id }}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Nombre:</span>
+                <span>{{ paciente.nombre }}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Edad:</span>
+                <span>{{ paciente.edad }} años</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Género:</span>
+                <span>{{ paciente.genero }}</span>
+            </div>
+            
+            <div class="info-item">
+                <span class="info-label">Tipo de sangre:</span>
+                <span>{{ paciente.tipo_sangre }}</span>
+            </div>
+            
+            {% if paciente.alergias %}
+            <div class="info-item">
+                <span class="info-label">Alergias:</span>
+                <span>{{ paciente.alergias }}</span>
+            </div>
+            {% endif %}
+            
+            {% if paciente.condiciones_medicas %}
+            <div class="info-item">
+                <span class="info-label">Condiciones médicas:</span>
+                <span>{{ paciente.condiciones_medicas }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="actions">
+            <a href="{% url 'lista_pacientes' %}" class="btn">Volver a la lista</a>
+        </div>
+    </div>
+</body>
+</html>

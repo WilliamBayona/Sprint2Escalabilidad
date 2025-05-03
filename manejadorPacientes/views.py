@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.shortcuts import render
 from .models import Paciente
 from django.http import HttpResponse
 from django.core import serializers
@@ -8,9 +9,15 @@ import json
 
 
 def lista_pacientes(request):
+    # Si se solicita JSON (por ejemplo, desde una API)
+    if request.headers.get('Accept') == 'application/json':
+        pacientes = Paciente.objects.all()
+        data = {"pacientes": list(pacientes.values())}
+        return JsonResponse(data)
+    
+    # Para solicitudes de navegador (HTML)
     pacientes = Paciente.objects.all()
-    data = {"pacientes": list(pacientes.values())}
-    return JsonResponse(data)
+    return render(request, 'lista_pacientes.html', {'pacientes': pacientes})
 
 def pacientes_view(request):
     if request.method == 'GET':
@@ -42,9 +49,16 @@ def pacientes_view(request):
 def paciente_view(request, pk):
     if request.method == 'GET':
         paciente = get_paciente(pk)
-        paciente_dto = serializers.serialize('json', [paciente])  # Se serializa como JSON
-        return JsonResponse(paciente_dto, safe=False)
+        
+        # Si se solicita JSON (por ejemplo, desde una API)
+        if request.headers.get('Accept') == 'application/json':
+            paciente_dto = serializers.serialize('json', [paciente])
+            return JsonResponse(paciente_dto, safe=False)
+        
+        # Para solicitudes de navegador (HTML)
+        return render(request, 'detalle_paciente.html', {'paciente': paciente})
+        
     if request.method == 'PUT':
         paciente_dto = actualizar_paciente(pk, json.loads(request.body))
         paciente = serializers.serialize('json', [paciente_dto])
-        return HttpResponse(paciente, 'application/json')
+        return HttpResponse(paciente, content_type='application/json')

@@ -55,16 +55,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'proyecto.wsgi.application'
 
+# Usar SQLite (comentado, solo para desarrollo local)
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "project_db",
-        "USER": "project_user",
-        "PASSWORD": "project",
-        "HOST": "10.128.0.2",
-        "PORT": "5432",
-    }
-}
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': BASE_DIR / 'db.sqlite3',
+     }
+ }
+
+# Configuración de PostgreSQL 
+#DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.postgresql_psycopg2",
+#        "NAME": "project_db",
+#        "USER": "project_user",
+#        "PASSWORD": "project",
+#        "HOST": "34.135.45.48",  # IP externa correcta del servidor de base de datos
+#        "PORT": "5432",
+#    }
+#}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
