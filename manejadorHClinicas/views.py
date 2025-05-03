@@ -4,7 +4,9 @@ from django.core import serializers
 from .logic.logic_historiasClinicas import get_historias_clinicas, get_historia_clinica, crear_historia_clinica, actualizar_historia_clinica
 from django.views.decorators.csrf import csrf_exempt  
 from .models import HistorialClinico
+import auth0backend
 import json
+import requests
 
 def lista_historias_clinicas(request):
     historias = HistorialClinico.objects.all()
@@ -47,3 +49,17 @@ def historia_clinica_view(request, pk):
         historia_dto = actualizar_historia_clinica(pk, json.loads(request.body))
         historia = serializers.serialize('json', [historia_dto])
         return HttpResponse(historia, 'application/json')
+
+def getRole(request):
+    user = request.user
+    auth0user = user.social_auth.filter(provider="auth0")[0]
+    accessToken = auth0user.extra_data['access_token']
+    
+    url = "https://dominio_auth0_tenant.auth0.com/userinfo"  # Asegúrate del claim correcto
+    headers = {'authorization': f'Bearer {accessToken}'}
+    
+    resp = requests.get(url, headers=headers)
+    userinfo = resp.json()
+    
+    role = userinfo['https://dominio_auth0_tenant.auth0.com/role']  # Asegúrate del claim correcto
+    return role
