@@ -6,7 +6,27 @@ from django.core import serializers
 from .logic.logic_pacientes import get_pacientes, get_paciente, crear_paciente, actualizar_paciente
 from django.views.decorators.csrf import csrf_exempt
 import json
+import requests
+from django.urls import path
+import proyecto.auth0backend as auth0backend
 
+
+
+def getRole(request):
+    user = request.user
+    auth0user = user.social_auth.filter(provider="auth0")[0]
+    accessToken = auth0user.extra_data['access_token']
+    
+    # Use string literals directly for URLs
+    url = "https://dev-y3lnnddg1z815lbo.us.auth0.com/userinfo"  
+    headers = {'authorization': f'Bearer {accessToken}'}
+    
+    resp = requests.get(url, headers=headers)
+    userinfo = resp.json()
+    
+    # Use string literals for accessing the role key
+    role = userinfo["https://dev-y3lnnddg1z815lbo.us.auth0.com/role"]  
+    return role
 
 def lista_pacientes(request):
     # Si se solicita JSON (por ejemplo, desde una API)
