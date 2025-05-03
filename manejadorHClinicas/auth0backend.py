@@ -30,20 +30,3 @@ def get_user_details(self, response):
             'picture': userinfo['picture'], 
             'user_id': userinfo['sub']}
 
-"""
-# Esta función está POR FUERA de la clase Auth0. Es una función independiente.
-
-def getRole(request):
-
-user = request.user auth0user = user.social_auth.filter(provider="auth0")[0]
-
-accessToken = auth0user.extra_data['access_token'] url = "https://dominio_auth0_tenant.auth0.com/userinfo" headers = {'authorization': 'Bearer ' + accessToken}
-
-resp = requests.get(url, headers=headers)
-
-userinfo = resp.json()
-
-role = userinfo['dominio_auth0_tenant.auth0.com/role']
-
-return (role)
-"""

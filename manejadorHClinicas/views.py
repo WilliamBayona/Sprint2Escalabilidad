@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.core import serializers
+from django.urls import path, include
 from .logic.logic_historiasClinicas import get_historias_clinicas, get_historia_clinica, crear_historia_clinica, actualizar_historia_clinica
 from django.views.decorators.csrf import csrf_exempt  
 from .models import HistorialClinico
@@ -55,11 +56,11 @@ def getRole(request):
     auth0user = user.social_auth.filter(provider="auth0")[0]
     accessToken = auth0user.extra_data['access_token']
     
-    url = "https://dominio_auth0_tenant.auth0.com/userinfo"  # Asegúrate del claim correcto
+    url = path("_auth0_tenant.auth0.com/userinfo")  
     headers = {'authorization': f'Bearer {accessToken}'}
     
     resp = requests.get(url, headers=headers)
     userinfo = resp.json()
     
-    role = userinfo['https://dominio_auth0_tenant.auth0.com/role']  # Asegúrate del claim correcto
+    role = userinfo[path('__auth0_tenant.auth0.com/role')]  
     return role
