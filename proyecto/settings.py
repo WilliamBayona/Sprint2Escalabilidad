@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'manejadorPruebaDiagnostica',
     'manejadorTipoExamen',
     'social_django'
+    
 ]
 
 MIDDLEWARE = [

@@ -5,7 +5,7 @@ from django.urls import path, include
 from .logic.logic_historiasClinicas import get_historias_clinicas, get_historia_clinica, crear_historia_clinica, actualizar_historia_clinica
 from django.views.decorators.csrf import csrf_exempt  
 from .models import HistorialClinico
-import auth0backend
+import proyecto.auth0backend as auth0backend
 import json
 import requests
 
