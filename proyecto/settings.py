@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'manejadorPacientes',
     'manejadorPruebaDiagnostica',
     'manejadorTipoExamen',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,17 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+# Autenticación con Auth0
+LOGIN_URL = "/login/auth0" 
+LOGIN_REDIRECT_URL = "/" 
+LOGOUT_REDIRECT_URL = "https://dominio_auth0_tenant.auth0.com/v2/logout?returnTo=http%3A%2F%2Fip_publica_instancia:8080" 
+SOCIAL_AUTH_TRAILING_SLASH = False # Remove end slash from routes 
+SOCIAL_AUTH_AUTH0_DOMAIN = 'dominio_auth0_tenant.auth0.com' 
+SOCIAL_AUTH_AUTH0_KEY = 'W8g5KLG4s2ogftLqVDrGwd3xD7JafO0S' 
+SOCIAL_AUTH_AUTH0_SECRET = '7MVp47TDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' 
+SOCIAL_AUTH_AUTH0_SCOPE = [ 'openid', 'profile','email','role', ] 
+AUTHENTICATION_BACKENDS = { 'monitoring.auth0backend.Auth0', 'django.contrib.auth.backends.ModelBackend', }
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
