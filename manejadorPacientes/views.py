@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .models import Paciente
 from django.http import HttpResponse
 from django.core import serializers
@@ -11,7 +12,7 @@ from django.urls import path
 import proyecto.auth0backend as auth0backend
 
 
-
+@login_required
 def getRole(request):
     user = request.user
     auth0user = user.social_auth.filter(provider="auth0")[0]
@@ -39,6 +40,7 @@ def lista_pacientes(request):
     pacientes = Paciente.objects.all()
     return render(request, 'lista_pacientes.html', {'pacientes': pacientes})
 
+@login_required
 def pacientes_view(request):
     if request.method == 'GET':
         pacientes = get_pacientes()
