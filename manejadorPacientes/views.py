@@ -31,6 +31,7 @@ def getRole(request):
 
 def lista_pacientes(request):
     # Si se solicita JSON (por ejemplo, desde una API)
+    getRole(request)
     if request.headers.get('Accept') == 'application/json':
         pacientes = Paciente.objects.all()
         data = {"pacientes": list(pacientes.values())}
@@ -40,7 +41,6 @@ def lista_pacientes(request):
     pacientes = Paciente.objects.all()
     return render(request, 'lista_pacientes.html', {'pacientes': pacientes})
 
-@login_required
 def pacientes_view(request):
     if request.method == 'GET':
         pacientes = get_pacientes()
