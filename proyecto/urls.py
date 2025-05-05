@@ -20,12 +20,16 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
+    path('', views.index, name='home'),  # Añade esta línea para la página de inicio
     path('admin/', admin.site.urls),
     path('', include('manejadorEventos.urls')),
     path('', include('manejadorHClinicas.urls')),
     path('', include('manejadorPacientes.urls')),
     path('', include('manejadorPruebaDiagnostica.urls')),
     path('health-check/', views.healthCheck),
+    
+    # URLs para autenticación
+    path('', include('social_django.urls')),  # Asegúrate que esto esté en tus URLpatterns
 ]
 
 # Configuración para servir archivos media en desarrollo

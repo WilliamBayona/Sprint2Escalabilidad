@@ -1,0 +1,202 @@
+html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Médica</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .header {
+            background-color: #0056b3;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .auth-section {
+            display: flex;
+            align-items: center;
+        }
+        .user-info {
+            margin-right: 15px;
+            text-align: right;
+        }
+        .user-role {
+            background-color: #28a745;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 20px;
+        }
+        .welcome-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .welcome-section h2 {
+            color: #0056b3;
+            margin-top: 0;
+        }
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .module-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+        }
+        .module-card h3 {
+            color: #0056b3;
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background-color: #003d82;
+        }
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #0056b3;
+            color: #0056b3;
+        }
+        .btn-outline:hover {
+            background-color: #f0f7ff;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #bd2130;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #343a40;
+            color: #f8f9fa;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Sistema de Gestión Médica</h1>
+        <div class="auth-section">
+            {% if user.is_authenticated %}
+                <div class="user-info">
+                    <div>Bienvenido, {{ user.first_name|default:user.username }}</div>
+                    {% if user_role %}
+                        <div class="user-role">{{ user_role }}</div>
+                    {% endif %}
+                </div>
+                <a href="{% url 'logout' %}" class="btn btn-outline">Cerrar sesión</a>
+            {% else %}
+                <a href="{% url 'social:begin' 'auth0' %}" class="btn btn-success">Iniciar sesión</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="welcome-section">
+            <h2>Bienvenido al Sistema de Gestión Médica</h2>
+            <p>Esta plataforma permite gestionar pacientes, historias clínicas y pruebas diagnósticas de manera eficiente.</p>
+            {% if not user.is_authenticated %}
+                <p>Por favor, inicia sesión para acceder a todas las funcionalidades.</p>
+                <a href="{% url 'social:begin' 'auth0' %}" class="btn btn-success">Iniciar sesión</a>
+            {% endif %}
+        </section>
+
+        {% if user.is_authenticated %}
+            <div class="modules-grid">
+                <div class="module-card">
+                    <h3>Pacientes</h3>
+                    <p>Gestiona la información de los pacientes, incluyendo datos personales y médicos.</p>
+                    <a href="{% url 'lista_pacientes' %}" class="btn">Ver pacientes</a>
+                </div>
+                
+                <div class="module-card">
+                    <h3>Historias Clínicas</h3>
+                    <p>Accede y administra las historias clínicas de los pacientes.</p>
+                    <a href="{% url 'lista_historias_clinicas' %}" class="btn">Ver historias clínicas</a>
+                </div>
+                
+                <div class="module-card">
+                    <h3>Pruebas Diagnósticas</h3>
+                    <p>Gestiona las pruebas diagnósticas realizadas a los pacientes.</p>
+                    <a href="/pruebas/" class="btn">Ver pruebas</a>
+                </div>
+                
+                <div class="module-card">
+                    <h3>Eventos Médicos</h3>
+                    <p>Administra eventos y citas médicas asociadas a los pacientes.</p>
+                    <a href="{% url 'lista_eventos' %}" class="btn">Ver eventos</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Sistema de Gestión Médica - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Puedes agregar JavaScript para mejorar la interactividad si lo deseas
+    </script>
+</body>
+</html>
