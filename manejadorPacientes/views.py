@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .models import Paciente
 from django.http import HttpResponse
 from django.core import serializers
@@ -11,7 +12,7 @@ from django.urls import path
 import proyecto.auth0backend as auth0backend
 
 
-
+@login_required
 def getRole(request):
     user = request.user
     auth0user = user.social_auth.filter(provider="auth0")[0]
@@ -30,6 +31,7 @@ def getRole(request):
 
 def lista_pacientes(request):
     # Si se solicita JSON (por ejemplo, desde una API)
+    getRole(request)
     if request.headers.get('Accept') == 'application/json':
         pacientes = Paciente.objects.all()
         data = {"pacientes": list(pacientes.values())}

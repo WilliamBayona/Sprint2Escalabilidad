@@ -93,7 +93,11 @@ SOCIAL_AUTH_AUTH0_DOMAIN = 'dominio_auth0_tenant.auth0.com'
 SOCIAL_AUTH_AUTH0_KEY = 'W8g5KLG4s2ogftLqVDrGwd3xD7JafO0S' 
 SOCIAL_AUTH_AUTH0_SECRET = '7MVp47TDXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' 
 SOCIAL_AUTH_AUTH0_SCOPE = [ 'openid', 'profile','email','role', ] 
-AUTHENTICATION_BACKENDS = { 'monitoring.auth0backend.Auth0', 'django.contrib.auth.backends.ModelBackend', }
+AUTHENTICATION_BACKENDS = (
+    'proyecto.auth0backend.Auth0',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
