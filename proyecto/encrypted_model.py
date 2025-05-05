@@ -8,11 +8,12 @@ class EncryptedModel(models.Model):
 
     def __init_subclass__(cls):
         super().__init_subclass__()
-        for field in list(cls._meta.fields):
-            if isinstance(field, CharField) and not isinstance(field, EncryptedCharField):
-                cls._replace_field(field, EncryptedCharField)
-            elif isinstance(field, TextField) and not isinstance(field, EncryptedTextField):
-                cls._replace_field(field, EncryptedTextField)
+        if not cls._meta.abstract:
+            for field in list(cls._meta.fields):
+                if isinstance(field, CharField) and not isinstance(field, EncryptedCharField):
+                    cls._replace_field(field, EncryptedCharField)
+                elif isinstance(field, TextField) and not isinstance(field, EncryptedTextField):
+                    cls._replace_field(field, EncryptedTextField)
 
     @classmethod
     def _replace_field(cls, old_field, new_field_class):
