@@ -1,5 +1,5 @@
 from django.db import models
-from pgcrypto.models import EncryptedCharField, EncryptedTextField
+from pgcrypto.fields import EncryptedCharField, EncryptedTextField
 from django.db.models import CharField, TextField
 
 class EncryptedModel(models.Model):
