@@ -23,7 +23,8 @@ INSTALLED_APPS = [
     'manejadorPacientes',
     'manejadorPruebaDiagnostica',
     'manejadorTipoExamen',
-    'social_django'
+    'social_django',
+    'pgcrypto',
     
 ]
 
@@ -144,3 +145,7 @@ os.makedirs(MEDIA_ROOT, exist_ok=True)
 os.makedirs(os.path.join(MEDIA_ROOT, 'eeg_files'), exist_ok=True)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuración de pgcrypto para cifrado
+PGCRYPTO_KEY = os.environ.get("PGCRYPTO_KEY", "clave-super-secreta")
+
