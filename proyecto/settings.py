@@ -73,7 +73,7 @@ DATABASES = {
 #        "NAME": "project_db",
 #        "USER": "project_user",
 #        "PASSWORD": "project",
-#        "HOST": "34.135.45.48",  # IP externa correcta del servidor de base de datos
+#        "HOST": "10.128.0.2",  # IP externa correcta del servidor de base de datos
 #        "PORT": "5432",
 #    }
 #}
