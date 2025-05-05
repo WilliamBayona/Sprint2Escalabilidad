@@ -78,13 +78,26 @@
             color: #6c757d;
             font-style: italic;
         }
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #28a745;
+        }
+        .btn-primary:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Lista de Pacientes</h1>
         
-        <div class="search-box">
+        <div class="header-actions">
+            <a href="{% url 'crear_paciente' %}" class="btn btn-primary">+ Crear nuevo paciente</a>
             <input type="text" id="searchInput" placeholder="Buscar paciente..." onkeyup="filterTable()">
         </div>
         

@@ -82,3 +82,44 @@ def paciente_view(request, pk):
         paciente_dto = actualizar_paciente(pk, json.loads(request.body))
         paciente = serializers.serialize('json', [paciente_dto])
         return HttpResponse(paciente, content_type='application/json')
+
+@csrf_exempt
+def crear_paciente_view(request):
+    if request.method == 'POST':
+        try:
+            # Obtenemos datos del formulario (solo los campos que existen en el modelo)
+            datos_paciente = {
+                'nombre': request.POST.get('nombre'),
+                'edad': int(request.POST.get('edad')),  # Convertir a entero
+                'genero': request.POST.get('genero'),
+                'tipo_sangre': request.POST.get('tipo_sangre')
+            }
+            
+            # Campos opcionales (solo los incluimos si tienen valor)
+            if request.POST.get('alergias'):
+                datos_paciente['alergias'] = request.POST.get('alergias')
+                
+            if request.POST.get('condiciones_medicas'):
+                datos_paciente['condiciones_medicas'] = request.POST.get('condiciones_medicas')
+            
+            # Validamos datos básicos
+            if not all([datos_paciente['nombre'], datos_paciente['edad'], 
+                       datos_paciente['genero'], datos_paciente['tipo_sangre']]):
+                from django.contrib import messages
+                messages.error(request, 'Todos los campos obligatorios deben ser completados')
+                return render(request, 'crear_paciente.html')
+            
+            # Creamos directamente el paciente sin usar los campos erróneos
+            nuevo_paciente = Paciente.objects.create(**datos_paciente)
+            
+            # Redireccionamos a la lista de pacientes
+            from django.shortcuts import redirect
+            return redirect('lista_pacientes')
+            
+        except Exception as e:
+            from django.contrib import messages
+            messages.error(request, f'Error al crear el paciente: {str(e)}')
+            return render(request, 'crear_paciente.html')
+    else:
+        # Si es GET, mostramos el formulario vacío
+        return render(request, 'crear_paciente.html')
